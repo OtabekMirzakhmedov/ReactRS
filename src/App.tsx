@@ -1,35 +1,86 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Component } from 'react';
+import Header from './components/Header';
+import Search from './components/Search';
+import CardList from './components/CardList';
+import Loader from './components/Loader';
+import ErrorBoundary from './components/ErrorBoundary';
+import TestErrorButton from './components/TestErrorButton';
+import { fetchPokemonByName, fetchPokemonList } from './services/pokemonService';
+import { PokemonCard } from './types/pokemon';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const STORAGE_KEY = 'pokemon_search_term';
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface State {
+  searchTerm: string;
+  pokemons: PokemonCard[];
+  loading: boolean;
+  error: string | null;
 }
 
-export default App
+export default class App extends Component<{}, State> {
+  constructor(props: {}) {
+    super(props);
+    const saved = localStorage.getItem(STORAGE_KEY) ?? '';
+    this.state = {
+      searchTerm: saved,
+      pokemons: [],
+      loading: false,
+      error: null,
+    };
+  }
+
+  componentDidMount() {
+    console.log('App mounted');
+    this.fetchPokemons(this.state.searchTerm);
+  }
+
+  componentDidUpdate(_prevProps: {}, prevState: State) {
+    if (prevState.searchTerm !== this.state.searchTerm) {
+      console.log('Search term changed:', this.state.searchTerm);
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('App unmounted');
+  }
+
+  fetchPokemons = async (term: string) => {
+    this.setState({ loading: true, error: null });
+    try {
+      const pokemons = term
+        ? await fetchPokemonByName(term)
+        : await fetchPokemonList();
+      this.setState({ pokemons, loading: false });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'An error occurred';
+      this.setState({ error: message, loading: false, pokemons: [] });
+    }
+  };
+
+  handleSearch = (term: string) => {
+    localStorage.setItem(STORAGE_KEY, term);
+    this.setState({ searchTerm: term });
+    this.fetchPokemons(term);
+  };
+
+  render() {
+    const { searchTerm, pokemons, loading, error } = this.state;
+    return (
+      <div className="app">
+        <div className="top-section">
+          <Header />
+          <Search initialValue={searchTerm} onSearch={this.handleSearch} />
+        </div>
+        <div className="bottom-section">
+          <ErrorBoundary>
+            <TestErrorButton />
+            {loading && <Loader />}
+            {!loading && error && <p className="error-message">{error}</p>}
+            {!loading && !error && <CardList pokemons={pokemons} />}
+          </ErrorBoundary>
+        </div>
+      </div>
+    );
+  }
+}

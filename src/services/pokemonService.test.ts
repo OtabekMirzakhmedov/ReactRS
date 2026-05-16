@@ -57,7 +57,7 @@ describe('pokemonService', () => {
     it('returns a formatted list of PokemonCards on success', async () => {
       vi.mocked(fetch)
         .mockResolvedValueOnce(
-          makeFetchResponse(true, { results: [{ name: 'pikachu', url: '' }] })
+          makeFetchResponse(true, { count: 1, results: [{ name: 'pikachu', url: '' }] })
         )
         .mockResolvedValueOnce(
           makeFetchResponse(true, {
@@ -67,7 +67,8 @@ describe('pokemonService', () => {
           })
         );
       const result = await fetchPokemonList();
-      expect(result).toEqual([{ name: 'Pikachu', description: 'Types: electric' }]);
+      expect(result.pokemons).toEqual([{ name: 'Pikachu', description: 'Types: electric' }]);
+      expect(result.total).toBe(1);
     });
 
     it('throws when the list fetch fails', async () => {

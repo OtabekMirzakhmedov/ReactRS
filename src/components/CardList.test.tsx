@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import CardList from './CardList';
+
+const renderWithRouter = (ui: React.ReactElement) =>
+  render(<MemoryRouter>{ui}</MemoryRouter>);
 
 describe('CardList', () => {
   it('renders "No Pokémon found." when list is empty', () => {
-    render(<CardList pokemons={[]} />);
+    renderWithRouter(<CardList pokemons={[]} />);
     expect(screen.getByText('No Pokémon found.')).toBeInTheDocument();
   });
 
@@ -12,7 +16,7 @@ describe('CardList', () => {
       { name: 'Pikachu', description: 'Types: electric' },
       { name: 'Bulbasaur', description: 'Types: grass, poison' },
     ];
-    render(<CardList pokemons={pokemons} />);
+    renderWithRouter(<CardList pokemons={pokemons} />);
     expect(screen.getByText('Pikachu')).toBeInTheDocument();
     expect(screen.getByText('Bulbasaur')).toBeInTheDocument();
   });
@@ -23,7 +27,7 @@ describe('CardList', () => {
       { name: 'Bulbasaur', description: 'Types: grass' },
       { name: 'Charmander', description: 'Types: fire' },
     ];
-    render(<CardList pokemons={pokemons} />);
+    renderWithRouter(<CardList pokemons={pokemons} />);
     expect(screen.getAllByRole('heading').length).toBe(3);
   });
 });

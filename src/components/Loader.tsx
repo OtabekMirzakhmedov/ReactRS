@@ -1,11 +1,7 @@
-import { Component } from 'react';
-
-export default class Loader extends Component {
-  render() {
-    return (
-      <div className="loader-container">
-        <div className="spinner" />
-      </div>
-    );
-  }
+export default function Loader() {
+  return (
+    <div className="loader-container">
+      <div className="spinner" />
+    </div>
+  );
 }

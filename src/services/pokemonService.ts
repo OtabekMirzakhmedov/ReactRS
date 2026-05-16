@@ -16,8 +16,12 @@ export const fetchPokemonByName = async (name: string): Promise<PokemonCard[]> =
   return [toCard(data)];
 };
 
-export const fetchPokemonList = async (): Promise<PokemonCard[]> => {
-  const res = await fetch(`${API_BASE}/pokemon?limit=20`);
+export const fetchPokemonList = async (
+  page: number = 1,
+  limit: number = 20
+): Promise<{ pokemons: PokemonCard[]; total: number }> => {
+  const offset = (page - 1) * limit;
+  const res = await fetch(`${API_BASE}/pokemon?limit=${limit}&offset=${offset}`);
   if (!res.ok) {
     throw new Error(`Failed to fetch Pokémon list (${res.status})`);
   }
@@ -30,5 +34,13 @@ export const fetchPokemonList = async (): Promise<PokemonCard[]> => {
       })
     )
   );
-  return details.map(toCard);
+  return { pokemons: details.map(toCard), total: data.count };
+};
+
+export const fetchPokemonDetail = async (name: string): Promise<PokemonDetail> => {
+  const res = await fetch(`${API_BASE}/pokemon/${name.toLowerCase()}`);
+  if (!res.ok) {
+    throw new Error(`Pokémon "${name}" not found (${res.status})`);
+  }
+  return res.json() as Promise<PokemonDetail>;
 };

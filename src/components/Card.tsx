@@ -1,15 +1,21 @@
-import { Component } from 'react';
 import { PokemonCard } from '../types/pokemon';
 
-export default class Card extends Component<PokemonCard> {
-  render() {
-    console.log("pokemoncard"+this)
-    const { name, description } = this.props;
-    return (
-      <div className="pokemon-card">
-        <h3>{name}</h3>
-        <p>{description}</p>
-      </div>
-    );
-  }
+interface Props extends PokemonCard {
+  onClick?: () => void;
+  isSelected?: boolean;
+}
+
+export default function Card({ name, description, onClick, isSelected }: Props) {
+  return (
+    <div
+      className={`pokemon-card${isSelected ? ' pokemon-card--selected' : ''}`}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
+    >
+      <h3>{name}</h3>
+      <p>{description}</p>
+    </div>
+  );
 }

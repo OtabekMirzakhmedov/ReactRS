@@ -122,3 +122,140 @@
 .error-test-btn:hover {
   border-color: #ff4444;
 }
+
+.main-nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.main-nav a {
+  color: #646cff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.main-nav a:hover {
+  text-decoration: underline;
+}
+
+.bottom-section {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.bottom-section--split .main-panel {
+  flex: 1;
+  min-width: 0;
+}
+
+.main-panel {
+  flex: 1;
+}
+
+.detail-wrapper {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.detail-panel {
+  position: sticky;
+  top: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.detail-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.detail-close:hover {
+  color: #fff;
+}
+
+.detail-content h2 {
+  margin-top: 0;
+}
+
+.detail-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.detail-stats li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  text-transform: capitalize;
+}
+
+.pokemon-card {
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.pokemon-card:hover {
+  border-color: #646cff;
+}
+
+.pokemon-card--selected {
+  border-color: #646cff;
+  background-color: #1e1e3a;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.about-page,
+.not-found-page {
+  max-width: 600px;
+  margin: 4rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.about-page p,
+.not-found-page p {
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: #646cff;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.not-found-page h1 {
+  font-size: 6rem;
+  margin: 0;
+  color: #646cff;
+}

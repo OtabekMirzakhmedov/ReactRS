@@ -1,40 +1,25 @@
-import { ChangeEvent, Component } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 interface Props {
   initialValue: string;
   onSearch: (term: string) => void;
 }
 
-interface State {
-  inputValue: string;
-}
+export default function Search({ initialValue, onSearch }: Props) {
+  const [inputValue, setInputValue] = useState(initialValue);
 
-export default class Search extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      inputValue: props.initialValue,
-    };
-  }
-
-  handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ inputValue: e.target.value });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
-  handleSearch = () => {
-    this.props.onSearch(this.state.inputValue.trim());
+  const handleSearch = () => {
+    onSearch(inputValue.trim());
   };
 
-  render() {
-    return (
-      <div className="search">
-        <input
-          value={this.state.inputValue}
-          onChange={this.handleChange}
-          placeholder="Search Pokémon..."
-        />
-        <button onClick={this.handleSearch}>Search</button>
-      </div>
-    );
-  }
+  return (
+    <div className="search">
+      <input value={inputValue} onChange={handleChange} placeholder="Search Pokémon..." />
+      <button onClick={handleSearch}>Search</button>
+    </div>
+  );
 }

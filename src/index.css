@@ -28,6 +28,10 @@ body {
   min-height: 100vh;
 }
 
+body:has(.flyout) {
+  padding-bottom: 72px;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -52,15 +56,16 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+[data-theme='light'] {
+  color: #213547;
+  background-color: #ffffff;
+}
+
+[data-theme='light'] a:hover {
+  color: #747bff;
+}
+
+[data-theme='light'] button {
+  background-color: #f9f9f9;
+  color: #213547;
 }

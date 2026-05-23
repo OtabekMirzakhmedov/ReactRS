@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Card from './Card';
 import { PokemonCard } from '../types/pokemon';
+import { useSelectionStore } from '../store/selectionStore';
 
 interface Props {
   pokemons: PokemonCard[];
@@ -10,6 +11,7 @@ export default function CardList({ pokemons }: Props) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const selectedName = searchParams.get('details');
+  const { selectedItems, toggleItem } = useSelectionStore();
 
   const handleCardClick = (name: string) => {
     const lowerName = name.toLowerCase();
@@ -35,6 +37,8 @@ export default function CardList({ pokemons }: Props) {
           description={pokemon.description}
           onClick={() => handleCardClick(pokemon.name)}
           isSelected={selectedName === pokemon.name.toLowerCase()}
+          isChecked={selectedItems.has(pokemon.name)}
+          onCheckboxChange={toggleItem}
         />
       ))}
     </div>

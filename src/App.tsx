@@ -8,8 +8,10 @@ import ErrorBoundary from './components/ErrorBoundary';
 import TestErrorButton from './components/TestErrorButton';
 import Pagination from './components/Pagination';
 import DetailPanel from './components/DetailPanel';
+import Flyout from './components/Flyout';
 import { fetchPokemonByName, fetchPokemonList } from './services/pokemonService';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { useTheme } from './context/ThemeContext';
 import { PokemonCard } from './types/pokemon';
 import './App.css';
 
@@ -22,6 +24,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [total, setTotal] = useState(0);
+  const { theme, toggleTheme } = useTheme();
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -91,6 +94,9 @@ export default function App() {
           <Link to="/about">About</Link>
         </nav>
         <Search initialValue={searchTerm} onSearch={handleSearch} />
+        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+          {theme === 'dark' ? '☀ Light mode' : '☾ Dark mode'}
+        </button>
       </div>
       <div className={`bottom-section${hasDetails ? ' bottom-section--split' : ''}`}>
         <ErrorBoundary>
@@ -108,6 +114,7 @@ export default function App() {
           )}
         </ErrorBoundary>
       </div>
+      <Flyout />
       <Outlet />
     </div>
   );

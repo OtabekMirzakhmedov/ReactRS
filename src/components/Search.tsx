@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 interface Props {
   initialValue: string;
@@ -12,14 +12,15 @@ export default function Search({ initialValue, onSearch }: Props) {
     setInputValue(e.target.value);
   };
 
-  const handleSearch = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     onSearch(inputValue.trim());
   };
 
   return (
-    <div className="search">
+    <form className="search" onSubmit={handleSubmit}>
       <input value={inputValue} onChange={handleChange} placeholder="Search Pokémon..." />
-      <button onClick={handleSearch}>Search</button>
-    </div>
+      <button type="submit">Search</button>
+    </form>
   );
 }
